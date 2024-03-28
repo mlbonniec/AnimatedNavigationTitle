@@ -30,6 +30,11 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
 }
 
 extension AnimatedNavigationTitleView where Title == EmptyView {
+  public init(_ title: String, content: () -> Content) {
+    self.title = AnyView(Text(title))
+    self.content = content()
+  }
+
   public init(_ title: LocalizedStringKey, content: () -> Content) {
     self.title = AnyView(Text(title))
     self.content = content()
