@@ -10,7 +10,7 @@ import SwiftUI
 struct ScrollableTitleItemModifier: ViewModifier {
   // MARK: Reactive Parameters
   @Environment(\.safeAreaTopInset) private var safeAreaTopInset: CGFloat
-  @Environment(\.titleContent) private var title: Text?
+  @Environment(\.titleContent) private var title: AnyView?
   @State private var itemDistanceToMinTop: CGFloat = .infinity
   @State private var itemHeight: CGFloat = .zero
   @State private var size: CGSize = .zero

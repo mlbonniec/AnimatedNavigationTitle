@@ -13,7 +13,7 @@ extension EnvironmentValues {
     set { self[AnimatedNavigationSafeAreaTopInsetKey.self] = newValue }
   }
 
-  var titleContent: Text? {
+  var titleContent: AnyView? {
     get { self[AnimatedNavigationTitleContent.self] }
     set { self[AnimatedNavigationTitleContent.self] = newValue }
   }

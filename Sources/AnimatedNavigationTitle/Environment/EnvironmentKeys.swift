@@ -12,5 +12,5 @@ struct AnimatedNavigationSafeAreaTopInsetKey: EnvironmentKey {
 }
 
 struct AnimatedNavigationTitleContent: EnvironmentKey {
-  static let defaultValue: Text? = nil
+  static let defaultValue: AnyView? = nil
 }

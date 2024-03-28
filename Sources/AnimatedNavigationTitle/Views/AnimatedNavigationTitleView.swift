@@ -9,22 +9,27 @@ import SwiftUI
 
 struct AnimatedNavigationTitleView<Content: View>: View {
   // MARK: Parameters
-  private let title: Text
+  private let title: AnyView
   private let content: Content
 
   // MARK: Lifecycle
-  init(_ title: LocalizedStringKey, content: @escaping () -> Content) {
-    self.title = Text(title)
+  init(_ title: LocalizedStringKey, content: () -> Content) {
+    self.title = AnyView(Text(title))
     self.content = content()
   }
 
-  init(_ title: Text, content: @escaping () -> Content) {
-    self.title = title
+  init(_ title: Text, content: () -> Content) {
+    self.title = AnyView(title)
     self.content = content()
   }
 
-  init(title: () -> Text, content: @escaping () -> Content) {
-    self.title = title()
+  init(_ title: () -> Text, content: () -> Content) {
+    self.title = AnyView(title())
+    self.content = content()
+  }
+
+  init(_ view: () -> AnyView, content: () -> Content) {
+    self.title = view()
     self.content = content()
   }
 
