@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
+public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
   // MARK: Parameters
   private let title: AnyView
   private let content: Content
 
   // MARK: Lifecycle
-  init(_ view: () -> Title, content: () -> Content) {
+  public init(_ view: () -> Title, content: () -> Content) {
     self.title = AnyView(view())
     self.content = content()
   }
 
   // MARK: Body
-  var body: some View {
+  public var body: some View {
     GeometryReader { proxy in
       content
         .navigationBarTitleDisplayMode(.inline)
@@ -30,17 +30,17 @@ struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
 }
 
 extension AnimatedNavigationTitleView where Title == EmptyView {
-  init(_ title: LocalizedStringKey, content: () -> Content) {
+  public init(_ title: LocalizedStringKey, content: () -> Content) {
     self.title = AnyView(Text(title))
     self.content = content()
   }
 
-  init(_ title: Text, content: () -> Content) {
+  public init(_ title: Text, content: () -> Content) {
     self.title = AnyView(title)
     self.content = content()
   }
 
-  init(_ title: () -> Text, content: () -> Content) {
+  public init(_ title: () -> Text, content: () -> Content) {
     self.title = AnyView(title())
     self.content = content()
   }

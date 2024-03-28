@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ScrollableTitleItemModifier: ViewModifier {
+public struct ScrollableTitleItemModifier: ViewModifier {
   // MARK: Reactive Parameters
   @Environment(\.safeAreaTopInset) private var safeAreaTopInset: CGFloat
   @Environment(\.titleContent) private var title: AnyView?
@@ -16,7 +16,7 @@ struct ScrollableTitleItemModifier: ViewModifier {
   @State private var size: CGSize = .zero
 
   // MARK: Body
-  func body(content: Content) -> some View {
+  public func body(content: Content) -> some View {
     content
       .background(
         GeometryReader { geometry in
@@ -53,7 +53,7 @@ struct ScrollableTitleItemModifier: ViewModifier {
 }
 
 extension View {
-  func scrollableTitleAnchor() -> ModifiedContent<Self, ScrollableTitleItemModifier> {
+  public func scrollableTitleAnchor() -> ModifiedContent<Self, ScrollableTitleItemModifier> {
     self.modifier(ScrollableTitleItemModifier())
   }
 }
