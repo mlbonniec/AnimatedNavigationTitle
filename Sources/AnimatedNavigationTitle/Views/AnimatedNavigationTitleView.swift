@@ -7,12 +7,29 @@
 
 import SwiftUI
 
-struct AnimatedNavigationTitleView<Content: View>: View {
+struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
   // MARK: Parameters
   private let title: AnyView
   private let content: Content
 
   // MARK: Lifecycle
+  init(_ view: () -> Title, content: () -> Content) {
+    self.title = AnyView(view())
+    self.content = content()
+  }
+
+  // MARK: Body
+  var body: some View {
+    GeometryReader { proxy in
+      content
+        .navigationBarTitleDisplayMode(.inline)
+        .environment(\.safeAreaTopInset, proxy.safeAreaInsets.top)
+        .environment(\.titleContent, title)
+    }
+  }
+}
+
+extension AnimatedNavigationTitleView where Title == EmptyView {
   init(_ title: LocalizedStringKey, content: () -> Content) {
     self.title = AnyView(Text(title))
     self.content = content()
@@ -26,20 +43,5 @@ struct AnimatedNavigationTitleView<Content: View>: View {
   init(_ title: () -> Text, content: () -> Content) {
     self.title = AnyView(title())
     self.content = content()
-  }
-
-  init(_ view: () -> AnyView, content: () -> Content) {
-    self.title = view()
-    self.content = content()
-  }
-
-  // MARK: Body
-  var body: some View {
-    GeometryReader { proxy in
-      content
-        .navigationBarTitleDisplayMode(.inline)
-        .environment(\.safeAreaTopInset, proxy.safeAreaInsets.top)
-        .environment(\.titleContent, title)
-    }
   }
 }
