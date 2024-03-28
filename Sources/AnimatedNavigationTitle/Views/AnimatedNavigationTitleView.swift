@@ -18,6 +18,11 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
     self.content = content()
   }
 
+  public init(_ view: Title, content: () -> Content) {
+    self.title = AnyView(view)
+    self.content = content()
+  }
+
   // MARK: Body
   public var body: some View {
     GeometryReader { proxy in
