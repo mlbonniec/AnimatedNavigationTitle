@@ -9,7 +9,8 @@ import SwiftUI
 
 public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
   // MARK: Reactive Properties
-  @State private var titleHeight: CGSize = .zero
+  @State private var doesTitleHeightBeenUpdated: Bool = false
+  @State private var titleHeight: CGFloat = .zero
   @State private var titleVisibility: CGFloat = AnimatedNavigationTitleVisibility.defaultValue.wrappedValue
 
   // MARK: Parameters
@@ -29,10 +30,10 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
 
   // MARK: Body
   public var body: some View {
-    GeometryReader { proxy in
+    GeometryReader { mainProxy in
       content
         .navigationBarTitleDisplayMode(.inline)
-        .environment(\.safeAreaTopInset, proxy.safeAreaInsets.top)
+        .environment(\.safeAreaTopInset, mainProxy.safeAreaInsets.top)
         .environment(\.animatedNavigationTitleVisibility, $titleVisibility)
         .toolbar {
           ToolbarItem(placement: .principal) {
@@ -40,12 +41,14 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
               .frame(maxHeight: .infinity)
               .background(
                 GeometryReader { proxy in
-                  Color.clear.onAppear {
-                    titleHeight = proxy.size
+                  Color.clear.onChange(of: proxy.size) { _ in
+                    titleHeight = proxy.size.height
+                    doesTitleHeightBeenUpdated = true
                   }
                 }
               )
-              .offset(y: titleHeight.height * titleVisibility)
+              .opacity(doesTitleHeightBeenUpdated ? 1 : 0)
+              .offset(y: titleHeight * titleVisibility)
               .clipped()
           }
         }
