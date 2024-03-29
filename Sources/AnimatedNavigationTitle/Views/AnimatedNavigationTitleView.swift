@@ -16,16 +16,33 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
   // MARK: Parameters
   private let title: AnyView
   private let content: Content
+  private let animation: AnimatedNavigationTitleAnimationType
 
   // MARK: Lifecycle
-  public init(_ view: () -> Title, content: () -> Content) {
-    self.title = AnyView(view())
-    self.content = content()
-  }
-
-  public init(_ view: Title, content: () -> Content) {
+  public init(_ view: Title, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
     self.title = AnyView(view)
     self.content = content()
+    self.animation = animation
+  }
+
+  public init(_ view: () -> Title, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
+    self.init(view(), animation: animation, content: content)
+  }
+
+  // MARK: Computed Properties
+  private var opacity: CGFloat {
+    guard doesTitleHeightBeenUpdated else { return 0 }
+    let hasOpacityAnimation: Bool = self.animation.contains(.opacity)
+
+    if doesTitleHeightBeenUpdated && !hasOpacityAnimation {
+      return 1
+    }
+
+    return hasOpacityAnimation ? 1 - titleVisibility : 0
+  }
+
+  private var offset: CGFloat {
+    self.animation.contains(.slide) ? titleHeight * titleVisibility : 0
   }
 
   // MARK: Body
@@ -47,8 +64,8 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
                   }
                 }
               )
-              .opacity(doesTitleHeightBeenUpdated ? 1 : 0)
-              .offset(y: titleHeight * titleVisibility)
+              .opacity(opacity)
+              .offset(y: offset)
               .clipped()
           }
         }
@@ -57,23 +74,21 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
 }
 
 extension AnimatedNavigationTitleView where Title == EmptyView {
-  public init(_ title: String, content: () -> Content) {
-    self.title = AnyView(Text(title))
-    self.content = content()
-  }
-
-  public init(_ title: LocalizedStringKey, content: () -> Content) {
-    self.title = AnyView(Text(title))
-    self.content = content()
-  }
-
-  public init(_ title: Text, content: () -> Content) {
+  public init(_ title: Text, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
     self.title = AnyView(title)
     self.content = content()
+    self.animation = animation
   }
 
-  public init(_ title: () -> Text, content: () -> Content) {
-    self.title = AnyView(title())
-    self.content = content()
+  public init(_ title: String, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
+    self.init(Text(title), animation: animation, content: content)
+  }
+
+  public init(_ title: LocalizedStringKey, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
+    self.init(Text(title), animation: animation, content: content)
+  }
+
+  public init(_ title: () -> Text, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
+    self.init(title(), animation: animation, content: content)
   }
 }
