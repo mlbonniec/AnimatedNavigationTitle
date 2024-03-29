@@ -7,10 +7,11 @@
 
 import SwiftUI
 
-struct AnimatedNavigationSafeAreaTopInsetKey: EnvironmentKey {
+struct AnimatedNavigationTitleSafeAreaTopInsetKey: EnvironmentKey {
   static let defaultValue: CGFloat = 0
 }
 
-struct AnimatedNavigationTitleContent: EnvironmentKey {
-  static let defaultValue: AnyView? = nil
+struct AnimatedNavigationTitleVisibility: EnvironmentKey {
+  /// Default value is 1, meaning that the title is by default translated on y by 100%
+  static let defaultValue: Binding<CGFloat> = .constant(1)
 }

@@ -10,45 +10,29 @@ import SwiftUI
 public struct ScrollableTitleItemModifier: ViewModifier {
   // MARK: Reactive Parameters
   @Environment(\.safeAreaTopInset) private var safeAreaTopInset: CGFloat
-  @Environment(\.titleContent) private var title: AnyView?
-  @State private var itemDistanceToMinTop: CGFloat = .infinity
-  @State private var itemHeight: CGFloat = .zero
-  @State private var size: CGSize = .zero
+  @Environment(\.animatedNavigationTitleVisibility) private var titleVisibility: Binding<CGFloat>
 
   // MARK: Body
   public func body(content: Content) -> some View {
     content
       .background(
         GeometryReader { geometry in
-          let minY = geometry.frame(in: .global).minY
-
           Color.clear
-            .onChange(of: minY) { _ in
-              itemDistanceToMinTop = minY - safeAreaTopInset
-              itemHeight = geometry.size.height
+            .onChange(of: geometry.frame(in: .global).minY) { _ in
+              updateTitleVisibility(geometry: geometry)
             }
         }
       )
-      .toolbar {
-        ToolbarItem(placement: .principal) {
-          let percent: CGFloat = (itemDistanceToMinTop + itemHeight) / itemHeight
-          let clamped: CGFloat = percent.clamped(0...1)
+  }
 
-          if let title {
-            title
-              .frame(maxHeight: .infinity)
-              .background(
-                GeometryReader { proxy in
-                  Color.clear.onAppear {
-                    size = proxy.size
-                  }
-                }
-              )
-              .offset(y: size.height * clamped)
-              .clipped()
-          }
-        }
-      }
+  // MARK: Methods
+  func updateTitleVisibility(geometry: GeometryProxy) {
+    let minY = geometry.frame(in: .global).minY
+    let itemDistanceToMinTop: CGFloat = minY - safeAreaTopInset
+    let itemHeight: CGFloat = geometry.size.height
+    let percent: CGFloat = (itemDistanceToMinTop + itemHeight) / itemHeight
+
+    titleVisibility.wrappedValue = percent.clamped(0...1)
   }
 }
 

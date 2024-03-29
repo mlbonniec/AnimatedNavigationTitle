@@ -9,12 +9,12 @@ import SwiftUI
 
 extension EnvironmentValues {
   var safeAreaTopInset: CGFloat {
-    get { self[AnimatedNavigationSafeAreaTopInsetKey.self] }
-    set { self[AnimatedNavigationSafeAreaTopInsetKey.self] = newValue }
+    get { self[AnimatedNavigationTitleSafeAreaTopInsetKey.self] }
+    set { self[AnimatedNavigationTitleSafeAreaTopInsetKey.self] = newValue }
   }
 
-  var titleContent: AnyView? {
-    get { self[AnimatedNavigationTitleContent.self] }
-    set { self[AnimatedNavigationTitleContent.self] = newValue }
+  var animatedNavigationTitleVisibility: Binding<CGFloat> {
+    get { self[AnimatedNavigationTitleVisibility.self] }
+    set { self[AnimatedNavigationTitleVisibility.self] = newValue }
   }
 }
