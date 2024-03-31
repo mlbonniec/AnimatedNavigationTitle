@@ -31,12 +31,23 @@ AnimatedNavigationTitleView("My Custom Title") {
 }
 ```
 
-# Configuration
-You can specify which animation(s) will be played by passing the `animation: AnimatedNavigationTitleAnimationType` parameter to the `AnimatedNavigationTitleView`.  
+# Configuration  
+
+### Animation
+You can specify which animation(s) will be played by passing the `animation: AnimatedNavigationTitleAnimationType` parameter to the `AnimatedNavigationTitleView`.
+
 Examples:
 * `AnimatedNavigationTitleView("Title", animation: .slide) {}` title sliding from the bottom. (the default behavior)
 * `AnimatedNavigationTitleView("Title", animation: .opacity) {}` title will appear by increasing its opacity.
 * `AnimatedNavigationTitleView("Title", animation: .all) {}` both slide and opacity.
+
+### Alignment
+Title content alignment can also be configured.
+
+Examples:
+* `AnimatedNavigationTitleView("Title", alignment: .leading) {}`
+* `AnimatedNavigationTitleView("Title", alignment: .center) {}`
+* `AnimatedNavigationTitleView("Title", alignment: .trailing) {}`
 
 # License
 This work is licensed under CC BY-SA 4.0.

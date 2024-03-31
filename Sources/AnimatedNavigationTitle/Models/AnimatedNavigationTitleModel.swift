@@ -21,3 +21,18 @@ public struct AnimatedNavigationTitleAnimationType: OptionSet {
   public static let opacity = AnimatedNavigationTitleAnimationType(rawValue: 1 << 1)
   public static let all: AnimatedNavigationTitleAnimationType = [.opacity, .slide]
 }
+
+public enum AnimatedNavigationTitleAlignment {
+  case leading, center, trailing
+
+  var alignment: Alignment {
+    switch self {
+    case .leading:
+      return .leading
+    case .center:
+      return .center
+    case .trailing:
+      return .trailing
+    }
+  }
+}

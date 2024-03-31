@@ -17,16 +17,28 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
   private let title: AnyView
   private let content: Content
   private let animation: AnimatedNavigationTitleAnimationType
+  private let alignment: AnimatedNavigationTitleAlignment
 
   // MARK: Lifecycle
-  public init(_ view: Title, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
+  public init(
+    _ view: Title,
+    animation: AnimatedNavigationTitleAnimationType = .slide,
+    alignment: AnimatedNavigationTitleAlignment = .center,
+    content: () -> Content
+  ) {
     self.title = AnyView(view)
-    self.content = content()
     self.animation = animation
+    self.alignment = alignment
+    self.content = content()
   }
 
-  public init(_ view: () -> Title, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
-    self.init(view(), animation: animation, content: content)
+  public init(
+    _ view: () -> Title,
+    animation: AnimatedNavigationTitleAnimationType = .slide,
+    alignment: AnimatedNavigationTitleAlignment = .center,
+    content: () -> Content
+  ) {
+    self.init(view(), animation: animation, alignment: alignment, content: content)
   }
 
   // MARK: Computed Properties
@@ -54,19 +66,17 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
         .environment(\.animatedNavigationTitleVisibility, $titleVisibility)
         .toolbar {
           ToolbarItem(placement: .principal) {
-            title
-              .frame(maxHeight: .infinity)
-              .background(
-                GeometryReader { proxy in
-                  Color.clear.onChange(of: proxy.size) { _ in
-                    titleHeight = proxy.size.height
-                    doesTitleHeightBeenUpdated = true
-                  }
+            GeometryReader { proxy in
+              title
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment.alignment)
+                .onAppear {
+                  titleHeight = proxy.size.height
+                  doesTitleHeightBeenUpdated = true
                 }
-              )
-              .opacity(opacity)
-              .offset(y: offset)
-              .clipped()
+                .opacity(opacity)
+                .offset(y: offset)
+                .clipped()
+            }
           }
         }
     }
@@ -74,21 +84,42 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
 }
 
 extension AnimatedNavigationTitleView where Title == EmptyView {
-  public init(_ title: Text, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
+  public init(
+    _ title: Text,
+    animation: AnimatedNavigationTitleAnimationType = .slide,
+    alignment: AnimatedNavigationTitleAlignment = .center,
+    content: () -> Content
+  ) {
     self.title = AnyView(title)
-    self.content = content()
     self.animation = animation
+    self.alignment = alignment
+    self.content = content()
   }
 
-  public init(_ title: String, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
-    self.init(Text(title), animation: animation, content: content)
+  public init(
+    _ title: String,
+    animation: AnimatedNavigationTitleAnimationType = .slide,
+    alignment: AnimatedNavigationTitleAlignment = .center,
+    content: () -> Content
+  ) {
+    self.init(Text(title), animation: animation, alignment: alignment, content: content)
   }
 
-  public init(_ title: LocalizedStringKey, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
-    self.init(Text(title), animation: animation, content: content)
+  public init(
+    _ title: LocalizedStringKey,
+    animation: AnimatedNavigationTitleAnimationType = .slide,
+    alignment: AnimatedNavigationTitleAlignment = .center,
+    content: () -> Content
+  ) {
+    self.init(Text(title), animation: animation, alignment: alignment, content: content)
   }
 
-  public init(_ title: () -> Text, animation: AnimatedNavigationTitleAnimationType = .slide, content: () -> Content) {
-    self.init(title(), animation: animation, content: content)
+  public init(
+    _ title: () -> Text,
+    animation: AnimatedNavigationTitleAnimationType = .slide,
+    alignment: AnimatedNavigationTitleAlignment = .center,
+    content: () -> Content
+  ) {
+    self.init(title(), animation: animation, alignment: alignment, content: content)
   }
 }
