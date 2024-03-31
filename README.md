@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/mlbonniec/AnimatedNavigationTitle/assets/29955402/e191cd5a-0f28-4b90-a76a-daddacf17b31" width="350px" />
+  <img src="https://github.com/mlbonniec/AnimatedNavigationTitle/assets/29955402/1d9b099d-1c5d-4890-b0db-0191ec0d0d73" alt="Library demonstration. Navigation title is appearing as the scrollview position change." />
 </p>
 
 # AnimatedNavigationTitle
