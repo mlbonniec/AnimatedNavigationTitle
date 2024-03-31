@@ -69,10 +69,14 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
             GeometryReader { proxy in
               title
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment.alignment)
-                .onAppear {
-                  titleHeight = proxy.size.height
-                  doesTitleHeightBeenUpdated = true
-                }
+                .background(
+                  GeometryReader { proxy in
+                    Color.clear.onChange(of: proxy.size) { _ in
+                      titleHeight = proxy.size.height
+                      doesTitleHeightBeenUpdated = true
+                    }
+                  }
+                )
                 .opacity(opacity)
                 .offset(y: offset)
                 .clipped()
