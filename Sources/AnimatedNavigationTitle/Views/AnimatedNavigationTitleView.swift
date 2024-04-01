@@ -57,6 +57,15 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
     self.animation.contains(.slide) ? titleHeight * titleVisibility : 0
   }
 
+  private var maxWidth: CGFloat? {
+    switch alignment {
+    case .leading, .trailing:
+      return .infinity
+    case .center:
+      return nil
+    }
+  }
+
   // MARK: Body
   public var body: some View {
     GeometryReader { mainProxy in
@@ -66,21 +75,19 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
         .environment(\.animatedNavigationTitleVisibility, $titleVisibility)
         .toolbar {
           ToolbarItem(placement: .principal) {
-            GeometryReader { proxy in
-              title
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment.alignment)
-                .background(
-                  GeometryReader { proxy in
-                    Color.clear.onChange(of: proxy.size) { _ in
-                      titleHeight = proxy.size.height
-                      doesTitleHeightBeenUpdated = true
-                    }
+            title
+              .frame(maxWidth: maxWidth, maxHeight: .infinity, alignment: alignment.alignment)
+              .background(
+                GeometryReader { proxy in
+                  Color.clear.onChange(of: proxy.size) { _ in
+                    titleHeight = proxy.size.height
+                    doesTitleHeightBeenUpdated = true
                   }
-                )
-                .opacity(opacity)
-                .offset(y: offset)
-                .clipped()
-            }
+                }
+              )
+              .opacity(opacity)
+              .offset(y: offset)
+              .clipped()
           }
         }
     }
