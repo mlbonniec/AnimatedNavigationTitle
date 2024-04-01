@@ -4,8 +4,10 @@
 
 # AnimatedNavigationTitle
 
-AnimatedNavigationTitle is simple SwiftUI package that helps you to create animated navigation title, based on the current scroll position.
+AnimatedNavigationTitle is a simple SwiftUI package that helps you to create animated navigation title, based on the current scroll position.
 It's inspired by the animations present on X, Github and Reddit iOS application.
+
+This works as well with simple `ScrollView` as it does with `List`.
 
 > [!NOTE]
 > AnimatedNavigationTitle is available on iOS 15 and later.
