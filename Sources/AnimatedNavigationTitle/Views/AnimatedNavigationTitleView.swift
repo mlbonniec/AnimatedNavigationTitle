@@ -79,9 +79,11 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
               .frame(maxWidth: maxWidth, maxHeight: .infinity, alignment: alignment.alignment)
               .background(
                 GeometryReader { proxy in
+                  Color.clear.onAppear {
+                    didTitleHeightChanged(proxy: proxy)
+                  }
                   Color.clear.onChange(of: proxy.size) { _ in
-                    titleHeight = proxy.size.height
-                    doesTitleHeightBeenUpdated = true
+                    didTitleHeightChanged(proxy: proxy)
                   }
                 }
               )
@@ -91,6 +93,12 @@ public struct AnimatedNavigationTitleView<Title: View, Content: View>: View {
           }
         }
     }
+  }
+
+  // MARK: Methods
+  private func didTitleHeightChanged(proxy: GeometryProxy) {
+    titleHeight = proxy.size.height
+    doesTitleHeightBeenUpdated = true
   }
 }
 
