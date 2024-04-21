@@ -51,6 +51,9 @@ Examples:
 * `AnimatedNavigationTitleView("Title", alignment: .center) {}`
 * `AnimatedNavigationTitleView("Title", alignment: .trailing) {}`
 
+# Todo
+- [ ] Add option to display title instantly
+
 # License
 This work is licensed under CC BY-SA 4.0.
 See [LICENSE](./LICENSE).
